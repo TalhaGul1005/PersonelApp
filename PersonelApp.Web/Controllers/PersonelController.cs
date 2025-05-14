@@ -152,14 +152,6 @@ namespace PersonelApp.Web.Controllers
 
             }
 
-            if (!ModelState.IsValid)
-            {
-                foreach (var modelError in ModelState.Values.SelectMany(v => v.Errors))
-                {
-                    Console.WriteLine(modelError.ErrorMessage);
-                }
-            }
-
             return View(i);
         }
 
@@ -168,10 +160,7 @@ namespace PersonelApp.Web.Controllers
             var izin = new IzinViewModel
             {
 
-                Izinler = _context.Izinler.ToList(),
-                Personels = _context.Personels.ToList(),
-
-
+                Izinler = _context.Izinler.ToList()
             };
 
             return View(izin);
