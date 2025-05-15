@@ -26,7 +26,7 @@
 
 	<div class="form-group">
 		<label asp-for="Zaman">Zaman</label>
-		<input asp-for="Zaman" class="form-control" />
+				<input asp-for="Zaman" class="form-control" type="date" />
 		<span asp-validation-for="Zaman" class="text-danger"></span>
 	</div>
 
@@ -60,37 +60,5 @@
 	</div>
 </form>
 
-@section Scripts {
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script>
-		$(document).ready(function () {
-			// Fakülte değiştiğinde Bölümleri getir
-			$("#FakulteId").change(function () {
-				var fakulteId = $(this).val();
-				$.getJSON('/Personel/BolumToFakulte', { fakulteId: fakulteId }, function (data) {
-					var bolumSelect = $("#BolumId");
-					bolumSelect.empty().append('<option selected disabled>Bölüm Seçiniz</option>');
-					$.each(data, function (i, item) {
-						bolumSelect.append('<option value="' + item.bolumId + '">' + item.bolumName + '</option>');
-					});
 
-					// Abd temizle
-					$("#AbdId").empty().append('<option selected disabled>ABD Seçiniz</option>');
-				});
-			});
-
-			// Bölüm değiştiğinde ABD’leri getir
-			$("#BolumId").change(function () {
-				var bolumId = $(this).val();
-				$.getJSON('/Personel/AbdToBolum', { bolumId: bolumId }, function (data) {
-					var abdSelect = $("#AbdId");
-					abdSelect.empty().append('<option selected disabled>ABD Seçiniz</option>');
-					$.each(data, function (i, item) {
-						abdSelect.append('<option value="' + item.abdId + '">' + item.abdName + '</option>');
-					});
-				});
-			});
-		});
-	</script>
-}
 

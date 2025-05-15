@@ -1,0 +1,43 @@
+﻿@model Personel
+
+<form method="post" asp-controller="personel" asp-action="Edit">
+	<input type="hidden" name="PersonelId" value="@Model.PersonelId" />
+	<div class="row mt-3">
+		<div class="col-md-1">
+		</div>
+		<div class="col-md-10">
+
+			<div class="form-group">
+				<label asp-for="Ad">Ad</label>
+				<input asp-for="Ad" class="form-control" value="@Model.Ad" />
+				<span asp-validation-for="Ad" class="text-danger"></span>
+			</div>
+
+			<div class="form-group">
+				<label asp-for="Soyad">Soyad</label>
+				<input asp-for="Soyad" class="form-control" value="@Model.Soyad" />
+				<span asp-validation-for="Soyad" class="text-danger"></span>
+			</div>
+
+			<div class="form-group">
+				<label asp-for="GecenYıl">@(DateOnly.FromDateTime(DateTime.Today).Year-1) Yılına ait yıllık izin</label>
+				<input asp-for="GecenYıl" class="form-control" value="@Model.GecenYıl" />
+				<span asp-validation-for="GecenYıl" class="text-danger"></span>
+			</div>
+
+			<div class="form-group">
+				<label asp-for="BuYıl">@DateOnly.FromDateTime(DateTime.Today).Year Yılına ait yıllık izin</label>
+				<input asp-for="BuYıl" class="form-control" value="@Model.BuYıl" />
+				<span asp-validation-for="BuYıl" class="text-danger"></span>
+			</div>
+
+			
+
+			<div class="d-grid gap-2 mt-3 justify-content-center">
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</div>
+		</div>
+		<div class="col-md-1">
+		</div>
+	</div>
+</form>

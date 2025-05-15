@@ -5,13 +5,13 @@
 <input type="hidden" name="PersonelId" value="@Model.PersonelId" />
 	<div class="form-group">
 		<label asp-for="BaslangicTarihi">BaslangicTarihi</label>
-		<input asp-for="BaslangicTarihi" class="form-control" />
+		<input asp-for="BaslangicTarihi" class="form-control" type="date"/>
 		<span asp-validation-for="BaslangicTarihi" class="text-danger"></span>
 	</div>
 
 	<div class="form-group">
 		<label asp-for="BitisTarihi">BitisTarihi</label>
-		<input asp-for="BitisTarihi" class="form-control" />
+		<input asp-for="BitisTarihi" class="form-control" type="date" />
 		<span asp-validation-for="BitisTarihi" class="text-danger"></span>
 	</div>
 	<div class="d-grid gap-2 mt-3 justify-content-center">

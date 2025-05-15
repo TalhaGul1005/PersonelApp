@@ -1,4 +1,4 @@
-﻿@model PersonelViewModel
+﻿@model PersonelsViewModel
 
 <div class="row mt-3">
     
@@ -31,7 +31,7 @@
     <div class="col-md-1">
     </div>
     <div class="col-md-10">
-        @foreach (var personel in Model.Personels)
+        @foreach (var personel in Model.personels)
         {
 
 
@@ -40,15 +40,28 @@
                     <div class="col-md-2">
                         <img src="..." class="img-fluid rounded-start" alt="...">
                     </div>
-                    <div class="col-md-10">
+                    <div class="col-md-8">
                         <div class="card-body">
+                            <h5 class="card-title">@personel.PersonelId</h5>
                             <h5 class="card-title">@(personel.Ad + " " + personel.Soyad)</h5>
                             <p class="card-text">TC: @personel.KimlikNo</p>
                             <p class="card-text">İşe Başlama Tarihi: @personel.Zaman</p>
                             <p class="card-text">Yıllık İzin: @(personel.GecenYıl + personel.BuYıl)</p>
                             <a type="button" class="btn btn-warning" asp-controller="personel" asp-action="IzinForm" asp-route-id="@personel.PersonelId">İzin Gir</a>
+                            <a type="button" class="btn btn-warning" asp-controller="personel" asp-action="Edit" asp-route-id="@personel.PersonelId">Düzenle</a>
+                            <a type="button" class="btn btn-warning" asp-controller="personel" asp-action="EditFGY" asp-route-id="@personel.PersonelId">FGY Düzenle</a>
+
+                            <form asp-controller="personel" asp-action="Delete" method="post" style="display:inline">
+                                <input type="hidden" name="PersonelId" value="@personel.PersonelId" />
+                                <button type="submit" class="btn btn-danger">Sil</button>
+                            </form>
                         </div>
                     </div>
+                    <div class="col-md-2">
+                        <p><b>Fakülte: </b>@personel.Fakulte.FakulteName<hr /><b>Bölüm: </b>@personel.Bolum.BolumName<hr /><b>Abd: </b>@personel.Abd.AbdName</p>
+                    </div>
+                   
+
                 </div>
             </div>
 

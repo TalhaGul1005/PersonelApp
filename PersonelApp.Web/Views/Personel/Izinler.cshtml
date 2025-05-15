@@ -8,29 +8,36 @@
 }
 
 <div class="row mt-3">
-<div class="col-md-1">
-</div>
-<div class="col-md-10">
-    
-@foreach (var Izin in Model.Izinler)
-{
-    <div class="card mb-3 mt-3" style="max-width: auto;">
-        <div class="row no-gutters">
-            <div class="col-md-1">
-            </div>
-            <div class="col-md-11">
-                <div class="card-body">
-                    <h7 class="card-title">@Izin.PersonelId</h7><hr />
-                    <h7 class="card-title">@Izin.BaslangicTarihi</h7><hr />
-                    <h7 class="card-title">@Izin.BitisTarihi</h7><hr />
-                    <h7 class="card-title">@Izin.Kullanilanizin</h7><hr />
+    <div class="col-md-1">
+    </div>
+    <div class="col-md-10">
+
+        @foreach (var item in Model.Izinler.Join(Model.Personels, p => p.PersonelId, z => z.PersonelId, (p,z) => new {p,z}))
+        {
+            <div class="card mb-3 mt-3" style="max-width: auto;">
+                <div class="row no-gutters">
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-11">
+                        <div class="card-body">
+                            <h7 class="card-title"><b>Sicil No:</b> @item.z.PersonelId</h7><hr />
+                            <h7 class="card-title"><b>Ad Soyad:</b> @(item.z.Ad + " " + item.z.Soyad)</h7><hr />
+                            <h7 class="card-title"><b>İzin Başlangıç Tarihi:</b> @item.p.BaslangicTarihi</h7><hr />
+                            <h7 class="card-title"><b>İzin Bitiş Tarihi:</b> @item.p.BitisTarihi</h7><hr />
+                            <h7 class="card-title"><b>Kullanılan İzin:</b> @item.p.Kullanilanizin</h7><hr />
+                            <form asp-controller="personel" asp-action="IzinDelete" method="post" style="display:inline">
+                                <input type="hidden" name="IzinBilgisiId" value="@item.p.IzinBilgisiId" />
+                                <button type="submit" class="btn btn-danger">Sil</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-}
+        }
+    </div>
+    <div class="col-md-1">
+        
+    </div>
 </div>
-<div class="col-md-1">
-</div>
-</div>
+

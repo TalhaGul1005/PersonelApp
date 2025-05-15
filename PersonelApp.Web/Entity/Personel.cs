@@ -17,9 +17,11 @@ namespace PersonelApp.Web.Entity
         public int GecenYıl { get; set; }
         public int BuYıl { get; set; }
         public int FakulteId { get; set; }
+        public Fakulte? Fakulte { get; set; }
         public int BolumId { get; set; }
+        public Bolum? Bolum { get; set; }
         public int AbdId { get; set; }
-
+        public Abd? Abd { get; set; }
 
     }
 }

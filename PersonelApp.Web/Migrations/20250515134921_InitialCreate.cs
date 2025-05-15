@@ -67,27 +67,6 @@ namespace PersonelApp.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Personels",
-                columns: table => new
-                {
-                    PersonelId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    KimlikNo = table.Column<long>(type: "bigint", nullable: false),
-                    Ad = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Soyad = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Zaman = table.Column<DateOnly>(type: "date", nullable: false),
-                    GecenYıl = table.Column<int>(type: "int", nullable: false),
-                    BuYıl = table.Column<int>(type: "int", nullable: false),
-                    FakulteId = table.Column<int>(type: "int", nullable: false),
-                    BolumId = table.Column<int>(type: "int", nullable: false),
-                    AbdId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Personels", x => x.PersonelId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AbdBolum",
                 columns: table => new
                 {
@@ -135,6 +114,45 @@ namespace PersonelApp.Web.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Personels",
+                columns: table => new
+                {
+                    PersonelId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    KimlikNo = table.Column<long>(type: "bigint", nullable: false),
+                    Ad = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Soyad = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Zaman = table.Column<DateOnly>(type: "date", nullable: false),
+                    GecenYıl = table.Column<int>(type: "int", nullable: false),
+                    BuYıl = table.Column<int>(type: "int", nullable: false),
+                    FakulteId = table.Column<int>(type: "int", nullable: false),
+                    BolumId = table.Column<int>(type: "int", nullable: false),
+                    AbdId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Personels", x => x.PersonelId);
+                    table.ForeignKey(
+                        name: "FK_Personels_Abds_AbdId",
+                        column: x => x.AbdId,
+                        principalTable: "Abds",
+                        principalColumn: "AbdId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Personels_Bolums_BolumId",
+                        column: x => x.BolumId,
+                        principalTable: "Bolums",
+                        principalColumn: "BolumId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Personels_Fakultes_FakulteId",
+                        column: x => x.FakulteId,
+                        principalTable: "Fakultes",
+                        principalColumn: "FakulteId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AbdBolum_BolumListBolumId",
                 table: "AbdBolum",
@@ -144,6 +162,21 @@ namespace PersonelApp.Web.Migrations
                 name: "IX_BolumFakulte_FakulteListFakulteId",
                 table: "BolumFakulte",
                 column: "FakulteListFakulteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Personels_AbdId",
+                table: "Personels",
+                column: "AbdId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Personels_BolumId",
+                table: "Personels",
+                column: "BolumId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Personels_FakulteId",
+                table: "Personels",
+                column: "FakulteId");
         }
 
         /// <inheritdoc />

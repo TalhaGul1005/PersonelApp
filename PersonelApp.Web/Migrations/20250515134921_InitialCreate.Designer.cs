@@ -12,7 +12,7 @@ using PersonelApp.Web.Data;
 namespace PersonelApp.Web.Migrations
 {
     [DbContext(typeof(PersonelContext))]
-    [Migration("20250512144930_InitialCreate")]
+    [Migration("20250515134921_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -168,6 +168,12 @@ namespace PersonelApp.Web.Migrations
 
                     b.HasKey("PersonelId");
 
+                    b.HasIndex("AbdId");
+
+                    b.HasIndex("BolumId");
+
+                    b.HasIndex("FakulteId");
+
                     b.ToTable("Personels");
                 });
 
@@ -199,6 +205,33 @@ namespace PersonelApp.Web.Migrations
                         .HasForeignKey("FakulteListFakulteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("PersonelApp.Web.Entity.Personel", b =>
+                {
+                    b.HasOne("PersonelApp.Web.Entity.Abd", "Abd")
+                        .WithMany()
+                        .HasForeignKey("AbdId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PersonelApp.Web.Entity.Bolum", "Bolum")
+                        .WithMany()
+                        .HasForeignKey("BolumId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PersonelApp.Web.Entity.Fakulte", "Fakulte")
+                        .WithMany()
+                        .HasForeignKey("FakulteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Abd");
+
+                    b.Navigation("Bolum");
+
+                    b.Navigation("Fakulte");
                 });
 #pragma warning restore 612, 618
         }

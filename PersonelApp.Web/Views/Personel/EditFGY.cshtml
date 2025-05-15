@@ -1,0 +1,43 @@
+﻿@model Personel
+
+<form method="post" asp-controller="personel" asp-action="EditFGY">
+	<input type="hidden" name="PersonelId" value="@Model.PersonelId" />
+	<div class="row mt-3">
+		<div class="col-md-1">
+		</div>
+		<div class="col-md-10">
+
+	
+
+			<div class="row mt-3 ">
+
+				<div class="col-md-4 ">
+					<select asp-for="FakulteId" asp-items="@ViewBag.Fakultes" class="form-select" size="7" aria-label="Size 7 select example">
+						<option selected disabled>Fakülte Seçiniz</option>
+					</select>
+					<span asp-validation-for="FakulteId" class="text-danger"></span>
+				</div>
+				<div class="col-md-4 ">
+					<select asp-for="BolumId" asp-items="@ViewBag.Bolums" class="form-select" size="7" aria-label="Size 7 select example">
+						<option selected disabled>Bölüm Seçiniz</option>
+					</select>
+					<span asp-validation-for="BolumId" class="text-danger"></span>
+				</div><div class="col-md-4 ">
+					<select asp-for="AbdId" asp-items="@ViewBag.Abds" class="form-select" size="7" aria-label="Size 7 select example">
+						<option selected disabled>Fakülte Seçiniz</option>
+					</select>
+					<span asp-validation-for="AbdId" class="text-danger"></span>
+				</div>
+			</div>
+
+			<div class="d-grid gap-2 mt-3 justify-content-center">
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</div>
+		</div>
+		<div class="col-md-1">
+		</div>
+	</div>
+</form>
+
+
+

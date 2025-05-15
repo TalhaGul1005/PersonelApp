@@ -41,25 +41,21 @@ namespace PersonelApp.Web.Data
 
             var personels = new List<Personel>()
             {
-                new Personel { KimlikNo = 12345678911, Ad = "Talha", Soyad = "Gül", Zaman = DateOnly.FromDateTime(DateTime.Today).AddYears(-1), GecenYıl = 10, BuYıl=0 },
-                new Personel { KimlikNo = 12345678912, Ad = "Rabia", Soyad = "Gül", Zaman = DateOnly.FromDateTime(DateTime.Today).AddYears(-3), GecenYıl = 20, BuYıl=10 },
-                new Personel { KimlikNo = 12345678913, Ad = "Mehmet", Soyad = "Kaya", Zaman = DateOnly.FromDateTime(DateTime.Today).AddYears(-10), GecenYıl = 30, BuYıl=20 },
-                new Personel { KimlikNo = 12345678914, Ad = "Ayşe", Soyad = "Yıldız", Zaman = DateOnly.FromDateTime(DateTime.Today).AddYears(-5), GecenYıl = 20, BuYıl=30 },
-                new Personel { KimlikNo = 12345678915, Ad = "Ali", Soyad = "Şahin", Zaman = DateOnly.FromDateTime(DateTime.Today).AddYears(-11), GecenYıl = 30, BuYıl=10 },
-                new Personel { KimlikNo = 12345678916, Ad = "Elif", Soyad = "Aydın", Zaman = DateOnly.FromDateTime(DateTime.Today).AddYears(-2), GecenYıl = 20, BuYıl=20 },
-                new Personel { KimlikNo = 12345678917, Ad = "Can", Soyad = "Koç", Zaman = DateOnly.FromDateTime(DateTime.Today).AddYears(-6), GecenYıl = 20, BuYıl=30 },
-                new Personel { KimlikNo = 12345678918, Ad = "Fatma", Soyad = "Arslan", Zaman = DateOnly.FromDateTime(DateTime.Today).AddYears(-12), GecenYıl = 30, BuYıl=5 },
-                new Personel { KimlikNo = 12345678919, Ad = "Emre", Soyad = "Doğan", Zaman = DateOnly.FromDateTime(DateTime.Today).AddYears(-4), GecenYıl = 20, BuYıl=10 },
-                new Personel { KimlikNo = 12345678920, Ad = "Seda", Soyad = "Bozkurt", Zaman = DateOnly.FromDateTime(DateTime.Today).AddYears(-9), GecenYıl = 20, BuYıl=20 }
+                new Personel { KimlikNo = 12345678911, Ad = "Talha", Soyad = "Gül", Zaman = DateOnly.FromDateTime(DateTime.Today).AddYears(-1), GecenYıl = 10, BuYıl=0, Fakulte = fakultes[0], Bolum= bolums[1], Abd=abds[1] },
+                new Personel { KimlikNo = 12345678912, Ad = "Rabia", Soyad = "Gül", Zaman = DateOnly.FromDateTime(DateTime.Today).AddYears(-3), GecenYıl = 20, BuYıl=10, Fakulte = fakultes[0], Bolum= bolums[1], Abd=abds[1] },
+                new Personel { KimlikNo = 12345678913, Ad = "Mehmet", Soyad = "Kaya", Zaman = DateOnly.FromDateTime(DateTime.Today).AddYears(-10), GecenYıl = 30, BuYıl=20, Fakulte = fakultes[0], Bolum= bolums[1], Abd=abds[1] },
+                new Personel {KimlikNo = 12345678914, Ad = "Ayşe", Soyad = "Yıldız", Zaman = DateOnly.FromDateTime(DateTime.Today).AddYears(-5), GecenYıl = 20, BuYıl = 30, Fakulte = fakultes[0], Bolum = bolums[1], Abd = abds[1]},
+                new Personel {KimlikNo = 12345678915, Ad = "Ali", Soyad = "Şahin", Zaman = DateOnly.FromDateTime(DateTime.Today).AddYears(-11), GecenYıl = 30, BuYıl = 10, Fakulte = fakultes[0], Bolum = bolums[1], Abd = abds[1]},
+                new Personel {KimlikNo = 12345678916, Ad = "Elif", Soyad = "Aydın", Zaman = DateOnly.FromDateTime(DateTime.Today).AddYears(-2), GecenYıl = 20, BuYıl = 20, Fakulte = fakultes[0], Bolum = bolums[1], Abd = abds[1]},
+                new Personel {KimlikNo = 12345678917, Ad = "Can", Soyad = "Koç", Zaman = DateOnly.FromDateTime(DateTime.Today).AddYears(-6), GecenYıl = 20, BuYıl = 30, Fakulte = fakultes[0], Bolum = bolums[1], Abd = abds[1]},
+                new Personel {KimlikNo = 12345678918, Ad = "Fatma", Soyad = "Arslan", Zaman = DateOnly.FromDateTime(DateTime.Today).AddYears(-12), GecenYıl = 30, BuYıl = 5, Fakulte = fakultes[0], Bolum = bolums[1], Abd = abds[1]},
+                new Personel {KimlikNo = 12345678919, Ad = "Emre", Soyad = "Doğan", Zaman = DateOnly.FromDateTime(DateTime.Today).AddYears(-4), GecenYıl = 20, BuYıl = 10, Fakulte = fakultes[0], Bolum = bolums[1], Abd = abds[1]},
+                new Personel {KimlikNo = 12345678920, Ad = "Seda", Soyad = "Bozkurt", Zaman = DateOnly.FromDateTime(DateTime.Today).AddYears(-9), GecenYıl = 20, BuYıl = 20, Fakulte = fakultes[0], Bolum = bolums[1], Abd = abds[1]}
             };
 
 
             if (context.Database.GetPendingMigrations().Count() == 0)
             {
-                if (context.Personels.Count() == 0)
-                {
-                    context.Personels.AddRange(personels);
-                }
                 if (context.Abds.Count() == 0)
                 {
                     context.Abds.AddRange(abds);
@@ -72,6 +68,11 @@ namespace PersonelApp.Web.Data
                 {
                     context.Fakultes.AddRange(fakultes);
                 }
+                if (context.Personels.Count() == 0)
+                {
+                    context.Personels.AddRange(personels);
+                }
+                
 
                 context.SaveChanges();
 

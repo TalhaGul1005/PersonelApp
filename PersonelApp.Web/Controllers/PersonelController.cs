@@ -2,10 +2,12 @@
 using AspNetCoreGeneratedDocument;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using PersonelApp.Web.Data;
 using PersonelApp.Web.Entity;
 using PersonelApp.Web.Models;
+using System.Linq;
 
 namespace PersonelApp.Web.Controllers
 {
@@ -23,11 +25,16 @@ namespace PersonelApp.Web.Controllers
         {
             return View();
         }
+        [HttpGet]
         public IActionResult List(string q)
         {
             var personels = _context.Personels.AsQueryable();
 
-            
+
+            ViewBag.Fakultes = new SelectList(_context.Fakultes.ToList(), "FakulteId", "FakulteName");
+            ViewBag.Bolums = new SelectList(_context.Bolums.ToList(), "BolumId", "BolumName");
+            ViewBag.Abds = new SelectList(_context.Abds.ToList(), "AbdId", "AbdName");
+
 
             if (!string.IsNullOrEmpty(q))
             {
@@ -37,15 +44,27 @@ namespace PersonelApp.Web.Controllers
                 );
             }
 
+            
+           
 
-            var personel = new PersonelViewModel
+            return View(new PersonelsViewModel 
             {
-
-                Personels = personels.ToList()
-
-            };
-
-            return View(personel);
+                personels= _context.Personels.Include(q => q.Fakulte).Include(q => q.Bolum).Include(q => q.Abd)
+                .Select(f => new PersonelViewModel
+                {
+                PersonelId = f.PersonelId,
+                Ad = f.Ad,
+                Soyad = f.Soyad,
+                Zaman=f.Zaman,
+                GecenYıl=f.GecenYıl,
+                BuYıl=f.BuYıl,
+                Fakulte=f.Fakulte,
+                Bolum=f.Bolum,
+                Abd=f.Abd,
+                KimlikNo=f.KimlikNo
+                })
+                .ToList()
+            });
         }
         [HttpGet]
         public IActionResult Create(int? id) 
@@ -58,8 +77,7 @@ namespace PersonelApp.Web.Controllers
         [HttpPost]
         public IActionResult Create(Personel p)
         {
-            if (ModelState.IsValid) 
-            {
+            
                 bool KimlikKontrol= _context.Personels.Any(k => k.KimlikNo == p.KimlikNo);
 
                 if (KimlikKontrol)
@@ -90,8 +108,8 @@ namespace PersonelApp.Web.Controllers
                 _context.SaveChanges();
                 TempData["Message"] = $"Yeni Kişi Eklendi.";
                 return RedirectToAction("list");
-            }
-            return View();  
+            
+            //return View(p);  
         }
         [HttpGet]
         public IActionResult IzinForm(int id)
@@ -105,7 +123,11 @@ namespace PersonelApp.Web.Controllers
         [HttpPost]
         public IActionResult IzinForm(IzinBilgisi i)
         {
-            
+            if (((i.BitisTarihi - i.BaslangicTarihi).Days + 1) < 0)
+            {
+                ModelState.AddModelError("BitisTarihi", "Bitiş tarihi başlangıçtan küçük olamaz.");
+                return View(i);
+            }
             if (ModelState.IsValid) 
             {
 
@@ -160,7 +182,8 @@ namespace PersonelApp.Web.Controllers
             var izin = new IzinViewModel
             {
 
-                Izinler = _context.Izinler.ToList()
+                Izinler = _context.Izinler.ToList(),
+                Personels = _context.Personels.ToList(),
             };
 
             return View(izin);
@@ -218,6 +241,83 @@ namespace PersonelApp.Web.Controllers
             
             
 
+            return RedirectToAction("List");
+        }
+        [HttpGet]
+        public IActionResult Edit (int id)
+        {
+            
+            return View(_context.Personels.Find(id));
+        }
+        [HttpPost]
+        public IActionResult Edit(Personel p) 
+        {
+            var sonuc = _context.Personels.FirstOrDefault(i => i.PersonelId == p.PersonelId);
+
+            if (sonuc != null) 
+            {
+                sonuc.Ad = p.Ad;
+                sonuc.Soyad = p.Soyad;
+                sonuc.GecenYıl=p.GecenYıl;
+                sonuc.BuYıl = p.BuYıl;
+
+                
+                _context.SaveChanges();
+                return RedirectToAction("List");
+            }
+            return View(p);
+        }
+        [HttpPost]
+        public IActionResult Delete(int PersonelId) 
+        { 
+            var delete = _context.Personels.Find(PersonelId);
+            _context.Personels.Remove(delete);
+            _context.SaveChanges(); 
+            return RedirectToAction("List");
+        }
+        [HttpGet]
+        public IActionResult EditFGY(int id)
+        {
+
+            ViewBag.Fakultes = new SelectList(_context.Fakultes.ToList(), "FakulteId", "FakulteName");
+            ViewBag.Bolums = new SelectList(_context.Bolums.ToList(), "BolumId", "BolumName");
+            ViewBag.Abds = new SelectList(_context.Abds.ToList(), "AbdId", "AbdName");
+            return View(_context.Personels.Find(id));  
+        }
+        [HttpPost]
+        public IActionResult EditFGY(Personel p)
+        {
+            var sonuc = _context.Personels.Find(p.PersonelId);
+
+            if (sonuc != null)
+            {
+                sonuc.FakulteId = p.FakulteId;
+                sonuc.BolumId = p.BolumId;
+                sonuc.AbdId = p.AbdId;
+
+                _context.SaveChanges();
+                return RedirectToAction("List");
+            }
+
+            return View(p);
+        }
+
+        [HttpPost]
+        public IActionResult IzinDelete(int IzinBilgisiId)
+        {
+            var delete = _context.Izinler.Find(IzinBilgisiId);
+
+            var personel = _context.Personels.Find(delete.PersonelId);
+
+            if (personel != null)
+            {
+                personel.BuYıl = personel.BuYıl+delete.Kullanilanizin;
+
+
+            }
+
+            _context.Izinler.Remove(delete);
+            _context.SaveChanges();
             return RedirectToAction("List");
         }
 
