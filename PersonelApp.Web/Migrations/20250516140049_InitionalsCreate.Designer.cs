@@ -12,8 +12,8 @@ using PersonelApp.Web.Data;
 namespace PersonelApp.Web.Migrations
 {
     [DbContext(typeof(PersonelContext))]
-    [Migration("20250515134921_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250516140049_InitionalsCreate")]
+    partial class InitionalsCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

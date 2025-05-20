@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using PersonelApp.Web.Entity;
 
 namespace PersonelApp.Web.Data
@@ -13,7 +14,7 @@ namespace PersonelApp.Web.Data
 
             context.Database.Migrate();
 
-            var abds=new List<Abd>()
+            var abds = new List<Abd>()
             {
                 new Abd {AbdName="Abd1"},
                 new Abd {AbdName="Abd2"},
@@ -27,14 +28,14 @@ namespace PersonelApp.Web.Data
                 new Abd {AbdName="Abd10"}
             };
 
-            var bolums= new List<Bolum>()
+            var bolums = new List<Bolum>()
             {
                 new Bolum {BolumName="Bölüm1", AbdList= new List<Abd> {abds[1],abds[2]} },
                 new Bolum {BolumName="Bölüm2", AbdList= new List<Abd> {abds[3],abds[4],abds[5]} },
                 new Bolum {BolumName="Bölüm3", AbdList= new List<Abd> {abds[6],abds[7],abds[8]} }
             };
 
-            var fakultes= new List<Fakulte>()
+            var fakultes = new List<Fakulte>()
             {
                 new Fakulte{FakulteName="Fakülte1", BolumList= new List<Bolum>() {bolums[0],bolums[1],bolums[2] } }
             };

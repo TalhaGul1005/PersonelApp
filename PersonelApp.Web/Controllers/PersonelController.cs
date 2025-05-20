@@ -28,7 +28,7 @@ namespace PersonelApp.Web.Controllers
         [HttpGet]
         public IActionResult List(string q)
         {
-            var personels = _context.Personels.AsQueryable();
+            var personel = _context.Personels.AsQueryable();
 
 
             ViewBag.Fakultes = new SelectList(_context.Fakultes.ToList(), "FakulteId", "FakulteName");
@@ -38,33 +38,37 @@ namespace PersonelApp.Web.Controllers
 
             if (!string.IsNullOrEmpty(q))
             {
-                personels = personels.Where(i =>
+                personel = personel.Where(i =>
                 i.Ad.ToLower().Contains(q.ToLower()) ||
                 i.Soyad.ToLower().Contains(q.ToLower())
                 );
             }
 
-            
-           
-
-            return View(new PersonelsViewModel 
+            var view = new PersonelsViewModel
             {
-                personels= _context.Personels.Include(q => q.Fakulte).Include(q => q.Bolum).Include(q => q.Abd)
+                personels = personel
+                .Include(p => p.Fakulte)
+                .Include(p => p.Bolum)
+                .Include(p => p.Abd)
                 .Select(f => new PersonelViewModel
                 {
-                PersonelId = f.PersonelId,
-                Ad = f.Ad,
-                Soyad = f.Soyad,
-                Zaman=f.Zaman,
-                GecenYıl=f.GecenYıl,
-                BuYıl=f.BuYıl,
-                Fakulte=f.Fakulte,
-                Bolum=f.Bolum,
-                Abd=f.Abd,
-                KimlikNo=f.KimlikNo
+                    PersonelId = f.PersonelId,
+                    Ad = f.Ad,
+                    Soyad = f.Soyad,
+                    Zaman = f.Zaman,
+                    GecenYıl = f.GecenYıl,
+                    BuYıl = f.BuYıl,
+                    Fakulte = f.Fakulte,
+                    Bolum = f.Bolum,
+                    Abd = f.Abd,
+                    KimlikNo = f.KimlikNo
                 })
                 .ToList()
-            });
+            };
+
+
+
+            return View(view);
         }
         [HttpGet]
         public IActionResult Create(int? id) 
@@ -189,25 +193,10 @@ namespace PersonelApp.Web.Controllers
             return View(izin);
         }
 
-        public JsonResult BolumToFakulte(int fakulteId) 
-        {
-            var bolums=_context.Bolums.Where(b =>b.FakulteList.Any(f=> f.FakulteId == fakulteId)).Select(b=> new {b.BolumId,b.BolumName}).ToList();
-            return Json(bolums);
-        }
-
-        public JsonResult AbdToBolum(int bolumId)
-        {
-            var abds = _context.Abds
-                .Where(a => a.BolumList.Any(b => b.BolumId == bolumId))
-                .Select(a => new { a.AbdId, a.AbdName })
-                .ToList();
-
-            return Json(abds);
-        }
+        
         [HttpGet]
         public IActionResult Update()
         {
-
             return View();
         }
         [HttpPost]
@@ -278,11 +267,21 @@ namespace PersonelApp.Web.Controllers
         [HttpGet]
         public IActionResult EditFGY(int id)
         {
+            var entity = _context.Personels.Include(i => i.Fakulte).Include(i => i.Bolum).Include(i => i.Abd).Select(p=> new FGYEditViewModel
+            {
+                PersonelId = p.PersonelId,
+                FakulteId = p.FakulteId,
+                BolumId = p.BolumId,
+                AbdId = p.AbdId,
+                Fakulte = p.Fakulte,
+                Bolum = p.Bolum,
+                Abd = p.Abd
+            }).FirstOrDefault(p=> p.PersonelId == id);
 
             ViewBag.Fakultes = new SelectList(_context.Fakultes.ToList(), "FakulteId", "FakulteName");
             ViewBag.Bolums = new SelectList(_context.Bolums.ToList(), "BolumId", "BolumName");
             ViewBag.Abds = new SelectList(_context.Abds.ToList(), "AbdId", "AbdName");
-            return View(_context.Personels.Find(id));  
+            return View(entity);
         }
         [HttpPost]
         public IActionResult EditFGY(Personel p)

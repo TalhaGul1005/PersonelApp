@@ -1,4 +1,6 @@
-﻿namespace PersonelApp.Web.Entity
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+
+namespace PersonelApp.Web.Entity
 {
     public class Fakulte
     {
